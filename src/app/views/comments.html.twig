@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+{% block title %}Отзывы{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <div>
+        <form id="feedback" enctype="multipart/form-data" action="add" method="post" role="form">
+            <div class="form-group">
+                <label for="exampleInputEmail">Email</label>
+                <input type="email" class="form-control" name="exampleInputEmail" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputName">Name</label>
+                <input type="name" class="form-control" name="exampleInputName" placeholder="Enter name">
+            </div>
+
+            <div class="form-group">
+                <label for="text">Text</label>
+                <textarea name="text" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="file" name="fupload"/>
+            </div>
+            <a href="#" class="js-preview btn btn-default">Предварительный просмотр</a>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+
+    <div>
+        <h4>Сортировка</h4>
+        <p>Имени:
+            <a href="/ascname">по возрастанию</a>
+            ,<a href="/descname">по убыванию</a>
+            Email:
+            <a href="/ascemail">по возрастанию</a>
+            ,<a href="/descemail">по убыванию</a>
+            Дате:
+            <a href="/ascdate">по возрастанию</a>
+            ,<a href="/descdate">по убыванию</a>
+        </p>
+    </div>
+
+    <div id="preview" class="panel panel-default" style="display:none">
+        <div class="panel-heading"></div>
+        <div class="panel-body"></div>
+        <img src="" class="img-rounded" width=320 height=240>
+    </div>
+
+    {% for comment in comments %}
+        {{ include('comment.html.twig') }}
+    {% endfor %}
+
+    <script>
+        $(document).ready(function() {
+            $('.js-preview').click(function() {
+                var now = new Date();
+                $('#preview .panel-heading').html(function() {
+                    var username = $('[name=exampleInputName]').val();
+                    var email = $('[name=exampleInputEmail]').val();
+                    var date = now.toString();
+                    return username + ' ' + email + ' ' + date;
+                });
+                $('#preview .panel-body').html($('[name=text]').val());
+                $('#preview').show();
+                return false;
+            });
+
+            $('#feedback').bootstrapValidator({
+                // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    exampleInputEmail: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The email address is required and cannot be empty'
+                            },
+                            emailAddress: {
+                                message: 'The email address is not a valid'
+                            }
+                        }
+                    },
+                    exampleInputName: {
+                        message: 'The username is not valid',
+                        validators: {
+                            notEmpty: {
+                                message: 'The username is required and cannot be empty'
+                            },
+                            stringLength: {
+                                min: 3,
+                                max: 50,
+                                message: 'The username must be more than 6 and less than 50 characters long'
+                            }
+                        }
+                    },
+                    text: {
+                        validators: {
+                            stringLength: {
+                                min: 10,
+                                max: 3000,
+                                message: 'Please enter at least 10 characters and no more than 200'
+                            },
+                            notEmpty: {
+                                message: 'Please supply a description of your project'
+                            }
+                        }
+                    }
+
+                }
+            });
+
+        });
+    </script>
+
+{% endblock %}

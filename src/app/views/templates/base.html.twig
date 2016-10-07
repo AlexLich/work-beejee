@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <title>
+                {% block title %}{% endblock %}
+            </title>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.css">
+            <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap-theme.css">
+            <script src="/vendor/components/jquery/jquery.js"></script>
+            <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.js"></script>
+
+            <!-- Include FontAwesome CSS if you want to use feedback icons provided by FontAwesome ??????-->
+            <link rel="stylesheet" href="/vendor/bower-asset/components-font-awesome/css/font-awesome.min.css"/>
+
+            <!-- BootstrapValidator CSS -->
+            <link rel="stylesheet" href="/vendor/bower-asset/bootstrapvalidator/dist/css/bootstrapValidator.min.css"/>
+
+            <!-- BootstrapValidator JS -->
+            <script type="text/javascript" src="/vendor/bower-asset/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+
+        {% endblock %}
+    </head>
+
+    <body>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
