@@ -21,7 +21,7 @@
             </div>
 
             <div class="form-group">
-                <input type="file" name="fupload"/>
+                <input type="file" name="fupload" id="fileUpload" multiple="multiple"/>
             </div>
             <a href="#" class="js-preview btn btn-default">Предварительный просмотр</a>
             <button type="submit" class="btn btn-primary">Отправить</button>
@@ -45,7 +45,8 @@
     <div id="preview" class="panel panel-default" style="display:none">
         <div class="panel-heading"></div>
         <div class="panel-body"></div>
-        <img src="" class="img-rounded" width=320 height=240>
+        <div id="image-holder"></div>
+        <!-- <img src="" class="img-rounded" width=320 height=240> -->
     </div>
 
     {% for comment in comments %}
@@ -60,11 +61,42 @@
                     var username = $('[name=exampleInputName]').val();
                     var email = $('[name=exampleInputEmail]').val();
                     var date = now.toString();
-                    return username + ' ' + email + ' ' + date;
+                    return username + ' ' + '<a href="mailto:#">' +email + '</a>'+ ' ' + date;
                 });
                 $('#preview .panel-body').html($('[name=text]').val());
                 $('#preview').show();
                 return false;
+            });
+
+            $("#fileUpload").on('change', function() {
+                //Get count of selected files
+                var countFiles = $(this)[0].files.length;
+                var imgPath = $(this)[0].value;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+                if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    if (typeof(FileReader) != "undefined") {
+                        //loop for each file selected for uploaded.
+                        for (var i = 0; i < countFiles; i++) {
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                $("<img />", {
+                                    "src": e.target.result,
+                                    "class": "thumb-image",
+                                    "height":320,
+                                    "width":240
+                                }).appendTo(image_holder);
+                            }
+                            image_holder.show();
+                            reader.readAsDataURL($(this)[0].files[i]);
+                        }
+                    } else {
+                        alert("This browser does not support FileReader.");
+                    }
+                } else {
+                    alert("Pls select only images");
+                }
             });
 
             $('#feedback').bootstrapValidator({
