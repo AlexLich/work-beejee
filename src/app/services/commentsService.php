@@ -14,10 +14,10 @@ class CommentsService
         $this->connect = new Connect();
     }
 
-    public function getAll()
+    public function getAll($sort, $orderby)
     {
         $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by created_at desc";
+        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by $sort $orderby";
         $pdo = $this->connect->getDb();
         if(!is_null($pdo)) {
             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
@@ -40,81 +40,82 @@ class CommentsService
         return $count;
     }
 
-    public function sortdecsname()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by username desc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
-
-    public function sortacsname()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by username asc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
-
-    public function sortdecsemail()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by email desc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
-
-    public function sortacsemail()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by email asc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
-
-    public function sortdecsdate()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by created_at desc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
-
-    public function sortacsdate()
-    {
-        $data = null;
-        $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by created_at asc";
-        $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
-            $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
-            $pdo = null;
-        }
-
-        return $data;
-    }
+//     public function sortdecsname()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by username desc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
+//     public function sortacsname()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by username asc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
+//     public function sortdecsemail()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by email desc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
+//     public function sortacsemail()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by email asc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
+//     public function sortdecsdate()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by created_at desc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
+//     public function sortacsdate()
+//     {
+//         $data = null;
+//         $sql="SELECT username, body,email, created_at  FROM comments WHERE accepted = 1 ORDER by created_at asc";
+//         $pdo = $this->connect->getDb();
+//         if(!is_null($pdo)) {
+//             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
+//             $pdo = null;
+//         }
+//
+//         return $data;
+//     }
+//
 }
