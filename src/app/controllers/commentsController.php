@@ -11,9 +11,9 @@ class CommentsController extends Controller
     /*protected $authService;*/
     protected $commentsService;
 
-    function __construct()
+    function __construct($context)
     {
-        parent::__construct();
+        parent::__construct($context);
         $this->commentsService = new CommentsService();
         /*$this->authService = new AuthService();*/
     }
@@ -32,13 +32,20 @@ class CommentsController extends Controller
         $comments->body = $body;
 
         $this->commentsService->add($comments);
-        /*$this->view->render('comments.html.twig');*/
         header("Location:/");
     }
 
     public function index()
     {
-        $comments = $this->commentsService->getAll();
+        $query = $this->context->getQueries();
+
+        $sort = isset($query['sort']) ? $query['sort'] : "created_at";
+        $orderby = isset($query['orderby']) ? $query['orderby'] : "desc";
+
+        $comments = $this->commentsService->getAll($sort, $orderby);
+
+        #при вызове getall ошибка, но код будет дальше или хз, или предупредить клиенту что не нашли или упс.
+
         $data = array('comments' => $comments);
         $this->view->render('comments.html.twig', $data);
     }
