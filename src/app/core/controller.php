@@ -4,9 +4,12 @@ class Controller
 {
     public $model;
     public $view;
+    public $context;
 
-    function __construct()
+    function __construct($context)
     {
+        $this->context = $context;
+
         $template = array('src/app/views','src/app/views/templates');
 
         $params = array(
