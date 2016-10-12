@@ -6,17 +6,16 @@
 {% endblock %}
 {% block content %}
     <div>
-        <h4>Сортировка</h4>
-        <button id="sortname" type="button" class="btn btn-default">Sort</button>
+        <strong>Сортировка</strong>
         <p>Имени:
-            <a href="/ascname">по возрастанию</a>
-            ,<a href="/descname">по убыванию</a>
+            <a href="/?sort=username&orderby=asc">по возрастанию</a>
+            ,<a href="/?sort=username&orderby=desc">по убыванию</a>
             Email:
-            <a href="/ascemail">по возрастанию</a>
-            ,<a href="/descemail">по убыванию</a>
+            <a href="/?sort=email&orderby=asc">по возрастанию</a>
+            ,<a href="/?sort=email&orderby=desc">по убыванию</a>
             Дате:
-            <a href="/ascdate">по возрастанию</a>
-            ,<a href="/descdate">по убыванию</a>
+            <a href="/?sort=created_at&orderby=asc">по возрастанию</a>
+            ,<a href="/?sort=created_at&orderby=desc">по убыванию</a>
         </p>
     </div>
 
@@ -30,7 +29,6 @@
         <div class="panel-heading"></div>
         <div class="panel-body"></div>
         <div id="image-holder"></div>
-        <!-- <img src="" class="img-rounded" width=320 height=240> -->
     </div>
 
     <div class="panel panel-default">
