@@ -52,45 +52,4 @@ class CommentsController extends Controller
         $this->view->render('comments.html.twig', $data);
     }
 
-    // public function descname()
-    // {
-    //     $comments = $this->commentsService->sortdecsname();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
-    //
-    // public function ascname()
-    // {
-    //     $comments = $this->commentsService->sortacsname();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
-    //
-    // public function descemail()
-    // {
-    //     $comments = $this->commentsService->sortdecsemail();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
-    //
-    // public function ascemail()
-    // {
-    //     $comments = $this->commentsService->sortacsemail();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
-    //
-    // public function descdate()
-    // {
-    //     $comments = $this->commentsService->sortdecsdate();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
-    //
-    // public function ascdate()
-    // {
-    //     $comments = $this->commentsService->sortacsdate();
-    //     $data = array('comments' => $comments);
-    //     $this->view->render('comments.html.twig', $data);
-    // }
 }
