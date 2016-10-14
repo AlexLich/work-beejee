@@ -5,18 +5,39 @@
     <script src="/src/assets/js/feedbackForm.js"></script>
 {% endblock %}
 {% block content %}
+
+    <div class="col-lg col-md-offset-11">
+        {% if isAuth == false %}
+            <a href="/login">Login</a>
+        {% endif %}
+
+        {% if isAuth %}
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </div>
+
     <div>
         <strong>Сортировка</strong>
-        <p>Имени:
-            <a href="/?sort=username&orderby=asc">по возрастанию</a>
-            ,<a href="/?sort=username&orderby=desc">по убыванию</a>
-            Email:
-            <a href="/?sort=email&orderby=asc">по возрастанию</a>
-            ,<a href="/?sort=email&orderby=desc">по убыванию</a>
-            Дате:
-            <a href="/?sort=created_at&orderby=asc">по возрастанию</a>
-            ,<a href="/?sort=created_at&orderby=desc">по убыванию</a>
-        </p>
+        <div class="row">
+            <div class="col-md-3">
+                <p>Имени:
+                    <a href="/?sort=username&orderby=asc">по возрастанию</a>
+                    ,<a href="/?sort=username&orderby=desc">по убыванию</a>
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>Email:
+                    <a href="/?sort=email&orderby=asc">по возрастанию</a>
+                    ,<a href="/?sort=email&orderby=desc">по убыванию</a>
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>Дате:
+                    <a href="/?sort=created_at&orderby=asc">по возрастанию</a>
+                    ,<a href="/?sort=created_at&orderby=desc">по убыванию</a>
+                </p>
+            </div>
+        </div>
     </div>
 
     <div id="comments">
