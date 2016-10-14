@@ -51,6 +51,14 @@ class Router
         //Пути роутинга прописать
 
         $this->router->map('get', '/', array('CommentsController', 'index'));
+
+        $this->router->map('post','/add', array('CommentsController','add'));
+
+        $this->router->map('get', '/login', array('AuthController','index'));
+
+        $this->router->map('post', '/login', array('AuthController','login'));
+
+        $this->router->map('get', '/logout', array('AuthController','logout'));
     }
 
     public function routing()
