@@ -1,8 +1,13 @@
 <div class="panel panel-default">
-<div class="panel-heading">{{comment.username}}
-    <a href="mailto:#">{{comment.email}}</a>
-    {{comment.created_at}}</div>
-<div class="panel-body">
-    {{comment.body}}
-</div>
+    <div class="panel-heading">{{comment.username}}
+        <a href="mailto:#">{{comment.email}}</a>
+        {{comment.created_at}}
+        {% if comment.changed_by_admin == 1 %}
+            <code>Изменен администратором</code>
+        {% endif %}
+    </div>
+
+    <div class="panel-body">
+        {{comment.body}}
+    </div>
 </div>
