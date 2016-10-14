@@ -10,46 +10,6 @@ class Router
     {
         $this->router = new Route();
 
-        // $this->router->map('get', '/[i:id]', function() {
-        //     $this->routingController('CommentsController', 'index');
-        // });
-
-        // $this->router->map('get', '/', 'CommentsController', 'index', $query);
-        // });
-
-        // $this->router->map('get', '/descname', function() {
-        //     $this->routingController('CommentsController', 'descname');
-        // });
-        //
-        // $this->router->map('get', '/ascname', function() {
-        //     $this->routingController('CommentsController', 'ascname');
-        // });
-        //
-        // $this->router->map('get', '/descemail', function() {
-        //     $this->routingController('CommentsController', 'descemail');
-        // });
-        //
-        // $this->router->map('get', '/ascemail', function() {
-        //     $this->routingController('CommentsController', 'ascemail');
-        // });
-        //
-        // $this->router->map('get', '/descdate', function() {
-        //     $this->routingController('CommentsController', 'descdate');
-        // });
-        //
-        // $this->router->map('get', '/ascdate', function() {
-        //     $this->routingController('CommentsController', 'ascdate');
-        // });
-        //
-        // $this->router->map('post', '/add', function() {
-        //     $this->routingController('CommentsController', 'add');
-        // });
-        //
-        // $this->router->map('get', '/edit/[i:id]/', function() {
-        //     $this->routingController('CommentsController', 'add');
-        // });
-        //Пути роутинга прописать
-
         $this->router->map('get', '/', array('CommentsController', 'index'));
 
         $this->router->map('post','/add', array('CommentsController','add'));
