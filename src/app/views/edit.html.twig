@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Редактирование{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+<div class="col-lg col-md-offset-11">
+    {% if isAuth %}
+        <a href="/logout">Logout</a>
+    {% endif %}
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form id="feedback" enctype="multipart/form-data" action="/edit/{{ comment.id }}" method="post" role="form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" value="{{comment.email}}">
+            </div>
+            <div class="form-group">
+                <label for="username">Name</label>
+                <input type="name" class="form-control" name="username" value="{{comment.username}}">
+            </div>
+
+            <div class="form-group">
+                <label for="body">Text</label>
+                <textarea name="body" class="form-control" rows="3">{{comment.body}}</textarea>
+            </div>
+            <a href="/">Отмена</a>
+            <button type="submit" class="btn btn-primary">Обновить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
