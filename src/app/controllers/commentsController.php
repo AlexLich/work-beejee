@@ -52,4 +52,42 @@ class CommentsController extends Controller
         $this->view->render('comments.html.twig', $data);
     }
 
+    public function edit()
+    {
+        $isAuth = $this->authService->isAuth();
+
+        $params = $this->context->getParams();
+
+        $id = $params['id'];
+
+
+        $comment=$this->commentsService->getById($id);
+
+        $data = array('comment' => $comment, 'isAuth' => $isAuth);
+
+        $this->view->render('edit.html.twig', $data);
+    }
+
+    public function update()
+    {
+        $params = $this->context->getParams();
+
+        $id = $params['id'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $body = $_POST['body'];
+
+        $comment = new Comment();
+
+        $comment->id = $id;
+        $comment->username = $username;
+        $comment->email = $email;
+        $comment->body = $body;
+
+        // var_dump($comment);
+
+        $count = $this->commentsService->update($comment);
+        header("Location:/");
+    }
+
 }
