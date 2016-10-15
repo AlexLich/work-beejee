@@ -3,11 +3,27 @@
         <a href="mailto:#">{{comment.email}}</a>
         {{comment.created_at}}
         {% if comment.changed_by_admin == 1 %}
-            <code>Изменен администратором</code>
+            <span class="label label-info">Изменен администратором</span>
         {% endif %}
+
+        {% if isAuth %}
+
+            {% if comment.accepted == 1 %}
+                <span class="label label-success">Принят</span>
+            {% else %}
+                <span class="label label-danger">Отклонен</span>
+            {% endif %}
+
+        {% endif %}
+
     </div>
 
     <div class="panel-body">
-        {{comment.body}}
+      <p style="white-space: pre-wrap;">{{comment.body}}</p>
     </div>
+    {% if isAuth %}
+        <div class="panel-body">
+            <a href="/edit/{{comment.id}}">Редактировать</a>
+        </div>
+    {% endif %}
 </div>
