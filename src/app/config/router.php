@@ -19,6 +19,11 @@ class Router
         $this->router->map('post', '/login', array('AuthController','login'));
 
         $this->router->map('get', '/logout', array('AuthController','logout'));
+
+        $this->router->map('get', '/edit/[i:id]', array('CommentsController','edit'));
+
+        $this->router->map('post', '/edit/[i:id]', array('CommentsController','update'));
+
     }
 
     public function routing()
