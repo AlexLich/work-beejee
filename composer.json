@@ -5,7 +5,8 @@
     "twig/twig": "^1.24",
     "twbs/bootstrap": "^3.3",
     "bower-asset/bootstrapvalidator": "^0.5.3",
-    "bower-asset/components-font-awesome": "^4.6"
+    "bower-asset/components-font-awesome": "^4.6",
+    "bower-asset/bootstrap-toggle": "^2.2"
   },
   "autoload": {
     "files": [
