@@ -4,31 +4,48 @@
     {{ parent() }}
 {% endblock %}
 {% block content %}
-<div class="col-lg col-md-offset-11">
-    {% if isAuth %}
-        <a href="/logout">Logout</a>
-    {% endif %}
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form id="feedback" enctype="multipart/form-data" action="/edit/{{ comment.id }}" method="post" role="form">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" value="{{comment.email}}">
-            </div>
-            <div class="form-group">
-                <label for="username">Name</label>
-                <input type="name" class="form-control" name="username" value="{{comment.username}}">
-            </div>
-
-            <div class="form-group">
-                <label for="body">Text</label>
-                <textarea name="body" class="form-control" rows="3">{{comment.body}}</textarea>
-            </div>
-            <a href="/">Отмена</a>
-            <button type="submit" class="btn btn-primary">Обновить</button>
-        </form>
+    <div class="col-lg col-md-offset-11">
+        {% if isAuth %}
+            <a href="/logout">Logout</a>
+        {% endif %}
     </div>
-</div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form id="feedback" enctype="multipart/form-data" action="/edit/{{ comment.id }}" method="post" role="form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" value="{{comment.email}}">
+                </div>
+                <div class="form-group">
+                    <label for="username">Name</label>
+                    <input type="name" class="form-control" name="username" value="{{comment.username}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="body">Text</label>
+                    <textarea name="body" class="form-control" rows="3">{{comment.body}}</textarea>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <a href="/">Отмена</a>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="toggle" type="checkbox" data-toggle="toggle" data-on="Принято" data-off="Отклонено" data-onstyle="success" data-offstyle="danger">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary">Обновить</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#toggle').bootstrapToggle();
+        })
+    </script>
 {% endblock %}
