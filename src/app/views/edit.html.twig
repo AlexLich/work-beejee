@@ -32,20 +32,14 @@
                             <a href="/">Отмена</a>
                         </div>
                         <div class="col-md-2">
-                            <input id="toggle" type="checkbox" data-toggle="toggle" data-on="Принято" data-off="Отклонено" data-onstyle="success" data-offstyle="danger">
+                            <input name="accepted" type="checkbox" data-toggle="toggle" data-on="Принято" data-off="Отклонено" data-onstyle="success" data-offstyle="danger" {% if comment.accepted == 1 %}checked{% endif %} >
                         </div>
                         <div class="col-md-1">
-                            <button type="submit" class="btn btn-primary">Обновить</button>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
-    <script>
-        $(function() {
-            $('#toggle').bootstrapToggle();
-        })
-    </script>
 {% endblock %}
