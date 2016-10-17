@@ -65,17 +65,30 @@ class CommentsController extends Controller
 
         $data = array('comment' => $comment, 'isAuth' => $isAuth);
 
-        $this->view->render('edit.html.twig', $data);
+        if ($isAuth) {
+            $this->view->render('edit.html.twig', $data);
+        }else {
+            $this->view->render('login.html.twig');
+        }
+
     }
 
     public function update()
     {
+        $changed_by_admin=0;
+
         $params = $this->context->getParams();
+
+        $id = $params['id'];
+
+
+        $fcomment=$this->commentsService->getById($id);
 
         $id = $params['id'];
         $username = $_POST['username'];
         $email = $_POST['email'];
         $body = $_POST['body'];
+        $accepted= (int) (isset($_POST['accepted']) && $_POST['accepted'] == 'on');
 
         $comment = new Comment();
 
@@ -83,10 +96,23 @@ class CommentsController extends Controller
         $comment->username = $username;
         $comment->email = $email;
         $comment->body = $body;
+        $comment->accepted = $accepted;
 
-        // var_dump($comment);
+        if ($fcomment->changed_by_admin==1) {
+            $changed_by_admin=1;
+        }else {
+            if ($fcomment->body!=$comment->body){
+                $changed_by_admin=1;
+            }
+            if ($fcomment->email!=$comment->email ){
+                $changed_by_admin=1;
+            }
+            if($fcomment->username!=$comment->username){
+                $changed_by_admin=1;
+            }
+        }
 
-        $count = $this->commentsService->update($comment);
+        $count = $this->commentsService->update($comment,$changed_by_admin);
         header("Location:/");
     }
 
