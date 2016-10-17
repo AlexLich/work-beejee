@@ -39,7 +39,7 @@ class Router
         $context = new RouteContext($paramMatch, $queryMatch);
 
         $this->routingController($context, $target);
-        //var_dump($quering);
+        
 
         // if($match && is_callable($target)) {
         //     call_user_func($target, $quering);
