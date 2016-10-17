@@ -56,7 +56,7 @@ class CommentsService
         // $isAuth = $this->authService->isAuth();
 
         $data = null;
-        $sql="SELECT id,username, body,email, created_at, changed_by_admin  FROM comments WHERE id='$id'";
+        $sql="SELECT id,username, body,email, created_at, changed_by_admin, accepted, image  FROM comments WHERE id='$id'";
 
         $pdo = $this->connect->getDb();
         if(!is_null($pdo)) {
@@ -70,20 +70,24 @@ class CommentsService
         $comments->email = $data["email"];
         $comments->username = $data["username"];
         $comments->body = $data["body"];
+        $comments->changed_by_admin = $data["changed_by_admin"];
+        $comments->accepted = $data["accepted"];
+        $comments->image = $data["image"];
 
         return $comments;
     }
 
-    public function update($comment)
+    public function update($comment,$changed_by_admin)
     {
         $count = 0;
 
-        $sql='UPDATE comments set email=:email, username=:username, body=:body, changed_by_admin=1 where id=:id';
+        $sql="UPDATE comments set email=:email, username=:username, body=:body, changed_by_admin=$changed_by_admin, accepted=:accepted where id=:id";
 
         $pdo = $this->connect->getDb();
+
         if(!is_null($pdo)) {
             $sth = $pdo->prepare($sql);
-            $count = $sth->execute(array(':username' => $comment->username, ':email' => $comment->email, ':body' => $comment->body,  ':id' => $comment->id));
+            $count = $sth->execute(array(':username' => $comment->username, ':email' => $comment->email, ':body' => $comment->body, 'accepted'=> $comment->accepted, ':id' => $comment->id));
             $pdo = null;
         }
         return $count;
