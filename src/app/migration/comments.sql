@@ -6,7 +6,7 @@ create table if not exists comments
     body text default '',
     changed_by_admin bool default false,
     accepted bool default false,
-    image text default '',
+    image text,
     created_at TIMESTAMP default CURRENT_TIMESTAMP,
     primary key (id)
 );
