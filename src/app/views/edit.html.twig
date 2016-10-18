@@ -26,13 +26,18 @@
                     <label for="body">Text</label>
                     <textarea name="body" class="form-control" rows="3">{{comment.body}}</textarea>
                 </div>
+                {% if comment.image != null %}
+                    <div class="panel-body">
+                        <img src="{{comment.image}}" alt=""/>
+                    </div>
+                {% endif %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-1">
                             <a href="/">Отмена</a>
                         </div>
                         <div class="col-md-2">
-                            <input name="accepted" type="checkbox" data-toggle="toggle" data-on="Принято" data-off="Отклонено" data-onstyle="success" data-offstyle="danger" {% if comment.accepted == 1 %}checked{% endif %} >
+                            <input name="accepted" type="checkbox" data-toggle="toggle" data-on="Принято" data-off="Отклонено" data-onstyle="success" data-offstyle="danger" {% if comment.accepted == 1 %} checked{% endif %}>
                         </div>
                         <div class="col-md-1">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
