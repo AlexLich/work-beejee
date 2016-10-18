@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Core\Controller;
-use App\Service\AuthService;
+use App\Core\controller;
+use App\Service\authService;
 
 class AuthController extends Controller
 {

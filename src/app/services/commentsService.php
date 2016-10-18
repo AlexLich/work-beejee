@@ -1,9 +1,9 @@
 <?php
 namespace App\Service;
 
-use App\Config\Connect;
-use App\Service\AuthService;
-use App\Model\Comment;
+use App\Config\connect;
+use App\Service\authService;
+use App\Model\comment;
 
 
 use PDO;

@@ -1,11 +1,11 @@
 <?php
 namespace App\Controller;
 
-use App\Core\Controller;
-use App\Service\CommentsService;
-use App\Service\ImageService;
-use App\Service\AuthService;
-use App\Model\Comment;
+use App\Core\controller;
+use App\Service\commentsService;
+use App\Service\imageService;
+use App\Service\authService;
+use App\Model\comment;
 
 class CommentsController extends Controller
 {

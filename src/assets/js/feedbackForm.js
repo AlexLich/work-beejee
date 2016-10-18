@@ -20,6 +20,7 @@ $(document).ready(function () {
       var image_holder = $("#image-holder");
       image_holder.empty();
       if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+          $('#save').prop('disabled', false);
           if (typeof(FileReader) != "undefined") {
               //loop for each file selected for uploaded.
               for (var i = 0; i < countFiles; i++) {
@@ -36,10 +37,16 @@ $(document).ready(function () {
                   reader.readAsDataURL($(this)[0].files[i]);
               }
           } else {
-              alert("This browser does not support FileReader.");
+            alert("This browser does not support FileReader.");
           }
       } else {
-          alert("Загрузите пожалуйста файл с расширением jpeg/pmg/gif!");
+        if (imgPath.length>0) {
+          alert("Загрузите пожалуйста файл с расширением jpeg/pmg/gif!"+imgPath);
+          $('#save').prop('disabled', true);
+        }else {
+          $('#save').prop('disabled', false);
+        }
+
       }
   });
 

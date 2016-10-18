@@ -1,8 +1,8 @@
 <?php
 namespace App\Config;
 
-use App\Core\Route;
-use App\Core\RouteContext;
+use App\Core\route;
+use App\Core\routeContext;
 
 class Router
 {
