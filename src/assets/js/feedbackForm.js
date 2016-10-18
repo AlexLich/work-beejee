@@ -39,7 +39,7 @@ $(document).ready(function () {
               alert("This browser does not support FileReader.");
           }
       } else {
-          alert("Pls select only images");
+          alert("Загрузите пожалуйста файл с расширением jpeg/pmg/gif!");
       }
   });
 
@@ -77,7 +77,7 @@ $(document).ready(function () {
           text: {
               validators: {
                   stringLength: {
-                      min: 10,
+                      min: 9,
                       max: 3000,
                       message: 'Please enter at least 10 characters and no more than 200'
                   },
