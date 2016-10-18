@@ -19,8 +19,15 @@
     </div>
 
     <div class="panel-body">
-      <p style="white-space: pre-wrap;">{{comment.body}}</p>
+        <p style="white-space: pre-wrap;">{{comment.body}}</p>
     </div>
+
+    {% if comment.image != null %}
+        <div class="panel-body">
+            <img src="{{comment.image}}" alt=""/>
+        </div>
+    {% endif %}
+
     {% if isAuth %}
         <div class="panel-body">
             <a href="/edit/{{comment.id}}">Редактировать</a>
