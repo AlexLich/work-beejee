@@ -1,7 +1,9 @@
 <?php
 namespace App\Config;
+
 use App\Core\Route;
 use App\Core\RouteContext;
+
 class Router
 {
     protected $router;
@@ -12,7 +14,7 @@ class Router
 
         $this->router->map('get', '/', array('CommentsController', 'index'));
 
-        $this->router->map('post','/add', array('CommentsController','add'));
+        $this->router->map('post', '/add', array('CommentsController','add'));
 
         $this->router->map('get', '/login', array('AuthController','index'));
 
@@ -23,7 +25,6 @@ class Router
         $this->router->map('get', '/edit/[i:id]', array('CommentsController','edit'));
 
         $this->router->map('post', '/edit/[i:id]', array('CommentsController','update'));
-
     }
 
     public function routing()
@@ -39,14 +40,6 @@ class Router
         $context = new RouteContext($paramMatch, $queryMatch);
 
         $this->routingController($context, $target);
-        
-
-        // if($match && is_callable($target)) {
-        //     call_user_func($target, $quering);
-        // } else {
-        //     // no route was matched
-        //     $this->NotFound();
-        // }
     }
 
     //Не доработанная функция на ошибок
@@ -73,5 +66,3 @@ class Router
         include('src/404.php');
     }
 }
-
- ?>
