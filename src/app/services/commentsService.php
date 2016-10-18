@@ -11,11 +11,14 @@ use PDO;
 class CommentsService
 {
     protected $connect;
+    protected $imageService;
 
-    function __construct()
+    public function __construct()
     {
         $this->connect = new Connect();
+
         $this->authService = new AuthService();
+        $this->imageService = new ImageService();
     }
 
     public function getAll($sort, $orderby)
@@ -24,13 +27,17 @@ class CommentsService
         $data = null;
 
         if ($isAuth) {
-            $sql="SELECT id, username, body,email, created_at, accepted, changed_by_admin  FROM comments ORDER by $sort $orderby";
-        }else {
-            $sql="SELECT username, body,email, created_at, changed_by_admin  FROM comments WHERE accepted = 1 ORDER by $sort $orderby";
+            $sql = "SELECT id, username, body,email, created_at, accepted, changed_by_admin, image
+                    FROM comments
+                    ORDER by $sort $orderby";
+        } else {
+            $sql = "SELECT username, body,email, created_at, changed_by_admin, image
+                    FROM comments WHERE accepted=1
+                    ORDER by $sort $orderby";
         }
 
         $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
+        if (!is_null($pdo)) {
             $data = $pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Comment");
             $pdo = null;
         }
@@ -38,14 +45,20 @@ class CommentsService
         return $data;
     }
 
-    public function add($comments)
+    public function add($comment)
     {
         $count = 0;
-        $sql = 'INSERT INTO comments (username, email, body) VALUES (:username, :email, :body)';
+
+        $sql = 'INSERT INTO comments (username, email, body, image) VALUES (:username, :email, :body, :image)';
         $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
+        if (!is_null($pdo)) {
             $sth = $pdo->prepare($sql);
-            $count = $sth->execute(array(':username' => $comments->username,':email' => $comments->email, ':body' => $comments->body));
+            $count = $sth->execute(array(
+                ':username' => $comment->username,
+                ':email' => $comment->email,
+                ':body' => $comment->body,
+                ':image' => $comment->image
+            ));
             $pdo = null;
         }
         return $count;
@@ -53,13 +66,14 @@ class CommentsService
 
     public function getById($id)
     {
-        // $isAuth = $this->authService->isAuth();
 
         $data = null;
-        $sql="SELECT id,username, body,email, created_at, changed_by_admin, accepted, image  FROM comments WHERE id='$id'";
+        $sql = "SELECT id,username, body,email, created_at, changed_by_admin, accepted, image
+                FROM comments
+                WHERE id='$id'";
 
         $pdo = $this->connect->getDb();
-        if(!is_null($pdo)) {
+        if (!is_null($pdo)) {
             $data = $pdo->query($sql)->fetch();
             $pdo = null;
         }
@@ -77,20 +91,31 @@ class CommentsService
         return $comments;
     }
 
-    public function update($comment,$changed_by_admin)
+    public function update($comment, $changed_by_admin)
     {
         $count = 0;
 
-        $sql="UPDATE comments set email=:email, username=:username, body=:body, changed_by_admin=$changed_by_admin, accepted=:accepted where id=:id";
+        $sql = "UPDATE comments
+                set email=:email,
+                    username=:username,
+                    body=:body,
+                    changed_by_admin=$changed_by_admin,
+                    accepted=:accepted
+                where id=:id";
 
         $pdo = $this->connect->getDb();
 
-        if(!is_null($pdo)) {
+        if (!is_null($pdo)) {
             $sth = $pdo->prepare($sql);
-            $count = $sth->execute(array(':username' => $comment->username, ':email' => $comment->email, ':body' => $comment->body, 'accepted'=> $comment->accepted, ':id' => $comment->id));
+            $count = $sth->execute(array(
+                ':username' => $comment->username,
+                ':email' => $comment->email,
+                ':body' => $comment->body,
+                'accepted'=> $comment->accepted,
+                ':id' => $comment->id
+            ));
             $pdo = null;
         }
         return $count;
     }
-
 }
