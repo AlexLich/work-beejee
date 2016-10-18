@@ -70,12 +70,26 @@
                 </div>
 
                 <div class="form-group">
-                    <input id="fileUpload" type="file" name="fupload" multiple="multiple"/>
+                    <input id="fileUpload" type="file" class="form-control" name="fupload" multiple="multiple"/>
                 </div>
                 <a id="preview" href="#" class="btn btn-default">Предварительный просмотр</a>
-                <button type="submit" class="btn btn-primary">Отправить</button>
+                <button type="submit" id="save" class="btn btn-primary">Отправить</button>
             </form>
         </div>
     </div>
-
+    <script>
+        file1 = document.getElementById('fileUpload');
+        file1.addEventListener('change', function() {
+            mime1.innerHTML = file1.files[0].type;
+            img1.src = file1.files[0].getAsDataURL();
+        }, false);
+        form1 = document.getElementById('feedback');
+        form1.addEventListener('submit', function(e) {
+            if ((/^image\/.+$/).test(file1.files[0].type))
+            else {
+                alert("nope, not allowing; it's not an image");
+                e.preventDefault();
+            }
+        }, false);
+    </script>
 {% endblock %}
