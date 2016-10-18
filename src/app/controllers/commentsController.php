@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Service\CommentsService;
+use App\Service\ImageService;
 use App\Service\AuthService;
 use App\Model\Comment;
 
@@ -10,12 +11,18 @@ class CommentsController extends Controller
 {
     protected $authService;
     protected $commentsService;
+    protected $imageService;
+    protected $isAuth = false;
 
-    function __construct($context)
+
+    public function __construct($context)
     {
         parent::__construct($context);
+
         $this->commentsService = new CommentsService();
+        $this->imageService = new ImageService();
         $this->authService = new AuthService();
+        $this->isAuth = $this->authService->isAuth();
     }
 
     public function add()
@@ -23,22 +30,27 @@ class CommentsController extends Controller
         $email = $_POST['exampleInputEmail'];
         $username = $_POST['exampleInputName'];
         $body = $_POST['text'];
+        $imageSource = $_FILES['fupload'];
 
+        if ($imageSource['size'] > 0
+            && ($imageSource['type'] == 'image/jpeg' || 'image/png' || 'image/gif')) {
+            $image = $this->imageService->convertToBase64($imageSource);
+        } else {
+            $image = '';
+        }
 
-        $comments = new Comment();
+        $comment = new Comment();
+        $comment->email = $email;
+        $comment->username = $username;
+        $comment->body = $body;
+        $comment->image = $image;
 
-        $comments->email = $email;
-        $comments->username = $username;
-        $comments->body = $body;
-
-        $this->commentsService->add($comments);
+        $this->commentsService->add($comment);
         header("Location:/");
     }
 
     public function index()
     {
-        $isAuth = $this->authService->isAuth();
-
         $query = $this->context->getQueries();
 
         $sort = isset($query['sort']) ? $query['sort'] : "created_at";
@@ -48,29 +60,25 @@ class CommentsController extends Controller
 
         #при вызове getall ошибка, но код будет дальше или хз, или предупредить клиенту что не нашли или упс.
 
-        $data = array('comments' => $comments, 'isAuth' => $isAuth);
+        $data = array('comments' => $comments, 'isAuth' => $this->isAuth);
         $this->view->render('comments.html.twig', $data);
     }
 
     public function edit()
     {
-        $isAuth = $this->authService->isAuth();
-
         $params = $this->context->getParams();
 
         $id = $params['id'];
 
-
         $comment=$this->commentsService->getById($id);
 
-        $data = array('comment' => $comment, 'isAuth' => $isAuth);
+        $data = array('comment' => $comment, 'isAuth' => $this->isAuth);
 
-        if ($isAuth) {
+        if ($this->isAuth) {
             $this->view->render('edit.html.twig', $data);
-        }else {
+        } else {
             $this->view->render('login.html.twig');
         }
-
     }
 
     public function update()
@@ -100,20 +108,19 @@ class CommentsController extends Controller
 
         if ($fcomment->changed_by_admin==1) {
             $changed_by_admin=1;
-        }else {
-            if ($fcomment->body!=$comment->body){
+        } else {
+            if ($fcomment->body!=$comment->body) {
                 $changed_by_admin=1;
             }
-            if ($fcomment->email!=$comment->email ){
+            if ($fcomment->email!=$comment->email) {
                 $changed_by_admin=1;
             }
-            if($fcomment->username!=$comment->username){
+            if ($fcomment->username!=$comment->username) {
                 $changed_by_admin=1;
             }
         }
 
-        $count = $this->commentsService->update($comment,$changed_by_admin);
+        $count = $this->commentsService->update($comment, $changed_by_admin);
         header("Location:/");
     }
-
 }
