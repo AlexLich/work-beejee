@@ -1,8 +1,36 @@
 <div class="panel panel-default">
-<div class="panel-heading">{{comment.username}}
-    <a href="mailto:#">{{comment.email}}</a>
-    {{comment.created_at}}</div>
-<div class="panel-body">
-    {{comment.body}}
-</div>
+    <div class="panel-heading">{{comment.username}}
+        <a href="mailto:#">{{comment.email}}</a>
+        {{comment.created_at}}
+        {% if comment.changed_by_admin == 1 %}
+            <span class="label label-info">Изменен администратором</span>
+        {% endif %}
+
+        {% if isAuth %}
+
+            {% if comment.accepted == 1 %}
+                <span class="label label-success">Принят</span>
+            {% else %}
+                <span class="label label-danger">Отклонен</span>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    <div class="panel-body">
+        <p style="white-space: pre-wrap;">{{comment.body}}</p>
+    </div>
+
+    {% if comment.image != null %}
+        <div class="panel-body">
+            <img src="{{comment.image}}" alt=""/>
+        </div>
+    {% endif %}
+
+    {% if isAuth %}
+        <div class="panel-body">
+            <a href="/edit/{{comment.id}}">Редактировать</a>
+        </div>
+    {% endif %}
 </div>
