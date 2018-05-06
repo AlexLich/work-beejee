@@ -1,21 +1,28 @@
 <?php
 namespace App\Controller;
 
-use App\Core\Controller;
-use App\Service\CommentsService;
-//use App\Service\AuthService;
-use App\Model\Comment;
+use App\Core\controller;
+use App\Service\commentsService;
+use App\Service\imageService;
+use App\Service\authService;
+use App\Model\comment;
 
 class CommentsController extends Controller
 {
-    /*protected $authService;*/
+    protected $authService;
     protected $commentsService;
+    protected $imageService;
+    protected $isAuth = false;
 
-    function __construct()
+
+    public function __construct($context)
     {
-        parent::__construct();
+        parent::__construct($context);
+
         $this->commentsService = new CommentsService();
-        /*$this->authService = new AuthService();*/
+        $this->imageService = new ImageService();
+        $this->authService = new AuthService();
+        $this->isAuth = $this->authService->isAuth();
     }
 
     public function add()
@@ -23,65 +30,97 @@ class CommentsController extends Controller
         $email = $_POST['exampleInputEmail'];
         $username = $_POST['exampleInputName'];
         $body = $_POST['text'];
+        $imageSource = $_FILES['fupload'];
 
+        if ($imageSource['size'] > 0
+            && ($imageSource['type'] == 'image/jpeg' || 'image/png' || 'image/gif')) {
+            $image = $this->imageService->convertToBase64($imageSource);
+        } else {
+            $image = '';
+        }
 
-        $comments = new Comment();
+        $comment = new Comment();
+        $comment->email = $email;
+        $comment->username = $username;
+        $comment->body = $body;
+        $comment->image = $image;
 
-        $comments->email = $email;
-        $comments->username = $username;
-        $comments->body = $body;
-
-        $this->commentsService->add($comments);
-        /*$this->view->render('comments.html.twig');*/
+        $this->commentsService->add($comment);
         header("Location:/");
     }
 
     public function index()
     {
-        $comments = $this->commentsService->getAll();
-        $data = array('comments' => $comments);
+        $query = $this->context->getQueries();
+
+        $sort = isset($query['sort']) ? $query['sort'] : "created_at";
+        $orderby = isset($query['orderby']) ? $query['orderby'] : "desc";
+
+        $comments = $this->commentsService->getAll($sort, $orderby);
+
+        #при вызове getall ошибка, но код будет дальше или хз, или предупредить клиенту что не нашли или упс.
+
+        $data = array('comments' => $comments, 'isAuth' => $this->isAuth);
         $this->view->render('comments.html.twig', $data);
     }
 
-    public function descname()
+    public function edit()
     {
-        $comments = $this->commentsService->sortdecsname();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
+        $params = $this->context->getParams();
+
+        $id = $params['id'];
+
+        $comment=$this->commentsService->getById($id);
+
+        $data = array('comment' => $comment, 'isAuth' => $this->isAuth);
+
+        if ($this->isAuth) {
+            $this->view->render('edit.html.twig', $data);
+        } else {
+            $this->view->render('login.html.twig');
+        }
     }
 
-    public function ascname()
+    public function update()
     {
-        $comments = $this->commentsService->sortacsname();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
-    }
+        $changed_by_admin=0;
 
-    public function descemail()
-    {
-        $comments = $this->commentsService->sortdecsemail();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
-    }
+        $params = $this->context->getParams();
 
-    public function ascemail()
-    {
-        $comments = $this->commentsService->sortacsemail();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
-    }
+        $id = $params['id'];
 
-    public function descdate()
-    {
-        $comments = $this->commentsService->sortdecsdate();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
-    }
 
-    public function ascdate()
-    {
-        $comments = $this->commentsService->sortacsdate();
-        $data = array('comments' => $comments);
-        $this->view->render('comments.html.twig', $data);
+        $fcomment=$this->commentsService->getById($id);
+
+        $id = $params['id'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $body = $_POST['body'];
+        $accepted= (int) (isset($_POST['accepted']) && $_POST['accepted'] == 'on');
+
+        $comment = new Comment();
+
+        $comment->id = $id;
+        $comment->username = $username;
+        $comment->email = $email;
+        $comment->body = $body;
+        $comment->accepted = $accepted;
+
+        if ($fcomment->changed_by_admin==1) {
+            $changed_by_admin=1;
+        } else {
+            if ($fcomment->body!=$comment->body) {
+                $changed_by_admin=1;
+            }
+            if ($fcomment->email!=$comment->email) {
+                $changed_by_admin=1;
+            }
+            if ($fcomment->username!=$comment->username) {
+                $changed_by_admin=1;
+            }
+        }
+
+        $count = $this->commentsService->update($comment, $changed_by_admin);
+        header("Location:/");
     }
 }
